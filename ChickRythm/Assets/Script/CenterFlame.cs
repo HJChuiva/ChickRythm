@@ -13,7 +13,6 @@ public class CenterFlame : MonoBehaviour
         myAudio = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -22,8 +21,11 @@ public class CenterFlame : MonoBehaviour
     {
         if(!musicStart)
         {
-            myAudio.Play();
-            musicStart = true;
+            if (collision.CompareTag("Note"))
+            {
+                myAudio.Play();
+                musicStart = true;
+            }
         }
     }
 }

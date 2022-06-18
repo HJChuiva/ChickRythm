@@ -8,13 +8,17 @@ public class NoteManager : MonoBehaviour
     double currentTime = 0d;
 
     [SerializeField] Transform tfNoteAppear = null;
-    [SerializeField] GameObject goNote = null;
+    //[SerializeField] GameObject goNote = null;
 
     TimingManager theTimingManager;
+    EffectManager theEffectManager;
+    ComboManager theComboManager;
 
     void Start()
     {
+        theEffectManager = FindObjectOfType<EffectManager>();
         theTimingManager = GetComponent<TimingManager>();
+        theComboManager = FindObjectOfType<ComboManager>();
     }
 
     // Update is called once per frame
@@ -27,8 +31,11 @@ public class NoteManager : MonoBehaviour
             // 60/120 = 1beat 당 0.5초
             //60s / bpm = 1beat 시간
 
-            GameObject t_note = Instantiate(goNote, tfNoteAppear.position, Quaternion.identity);
-            t_note.transform.SetParent(this.transform);
+            GameObject t_note = ObjectPool.instance.noteQueue.Dequeue(); 
+            t_note.transform.position = tfNoteAppear.position;
+            t_note.SetActive(true);
+            //GameObject t_note = Instantiate(goNote, tfNoteAppear.position, Quaternion.identity);
+            //t_note.transform.SetParent(this.transform);
             theTimingManager.boxNoteList.Add(t_note);
             currentTime -= 60d / bpm;
 
@@ -40,8 +47,18 @@ public class NoteManager : MonoBehaviour
     {
         if(collision.CompareTag("Note"))
         {
+            //true 일때만 연출이 뜨도록
+            if (collision.GetComponent<Note>().GetNoteFlag())
+            {
+                theEffectManager.JudgementEffect(4);
+                theComboManager.ResetCombo();
+            }
             theTimingManager.boxNoteList.Remove(collision.gameObject);
-            Destroy(collision.gameObject);
+            
+            ObjectPool.instance.noteQueue.Enqueue(collision.gameObject);
+            collision.gameObject.SetActive(false);
+            
+            //Destroy(collision.gameObject);
         }
     }
 }
