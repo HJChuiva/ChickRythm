@@ -26,7 +26,6 @@ public class ObjectPool : MonoBehaviour
         noteQueue = InsertQueue(objectInfo[0]);
     }
 
-
     Queue<GameObject> InsertQueue(ObjectInfo p_objectInfo)
     {
         Queue<GameObject> t_queue = new Queue<GameObject>();
@@ -39,7 +38,14 @@ public class ObjectPool : MonoBehaviour
             else
                 t_clone.transform.SetParent(this.transform);
 
+            /*if(t_clone==null)
+            {
+                Debug.Log("fuck");
+            }*/
+
             t_queue.Enqueue(t_clone);
+
+
         }
         return t_queue;
     }
