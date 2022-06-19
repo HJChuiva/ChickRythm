@@ -31,9 +31,10 @@ public class NoteManager : MonoBehaviour
             // 60/120 = 1beat 당 0.5초
             //60s / bpm = 1beat 시간
 
-            GameObject t_note = ObjectPool.instance.noteQueue.Dequeue(); 
+            GameObject t_note = ObjectPool.instance.noteQueue.Dequeue();
             t_note.transform.position = tfNoteAppear.position;
             t_note.SetActive(true);
+
             //GameObject t_note = Instantiate(goNote, tfNoteAppear.position, Quaternion.identity);
             //t_note.transform.SetParent(this.transform);
             theTimingManager.boxNoteList.Add(t_note);

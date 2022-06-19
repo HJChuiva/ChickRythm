@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+//오브젝트 풀링 클래스 만듬
 public class ObjectInfo
 {
     public GameObject goPrefab;
@@ -14,14 +15,15 @@ public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool instance;
 
-    [SerializeField] ObjectInfo[] objectInfos = null;
+    [SerializeField] ObjectInfo[] objectInfo = null;
 
+    //큐타입으로 만들어 선입선출로 제작
     public Queue<GameObject> noteQueue = new Queue<GameObject>();
 
     void Start()
     {
         instance = this;
-        noteQueue = InsertQueue(objectInfos[0]);
+        noteQueue = InsertQueue(objectInfo[0]);
     }
 
 
@@ -31,7 +33,7 @@ public class ObjectPool : MonoBehaviour
         for (int i = 0; i < p_objectInfo.count; i++)
         {
             GameObject t_clone = Instantiate(p_objectInfo.goPrefab, transform.position, Quaternion.identity);
-            t_clone.SetActive(false);
+            t_clone.SetActive(false);       //바로 비활성화
             if (p_objectInfo.tfPoolParent != null)
                 t_clone.transform.SetParent(p_objectInfo.tfPoolParent);
             else
